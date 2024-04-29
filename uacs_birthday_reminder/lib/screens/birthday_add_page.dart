@@ -2,7 +2,7 @@ import '../../components/birthday_card/birthday_card.dart';
 import '../../components/date_picker.dart';
 import '../../components/time_picker.dart';
 import '../../components/view_title.dart';
-import '../../utilities/Birthday.dart';
+import '../../utilities/birthday.dart';
 import '../../utilities/birthday_data.dart';
 import '../../utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,8 @@ class AddBirthdayPage extends StatefulWidget {
 
 class _AddBirthdayPageState extends State<AddBirthdayPage> {
   String name = 'Name';
+  String notes = '';
+  String relation = '';
 
   DateTime date = DateTime.now();
 
@@ -141,51 +143,83 @@ class _AddBirthdayPageState extends State<AddBirthdayPage> {
       padding: const EdgeInsets.all(10),
       child: Form(
         key: _formKey,
-        child: TextFormField(
-          keyboardType: TextInputType.text,
-          keyboardAppearance: Brightness.dark,
-          style: const TextStyle(color: Constants.whiteSecondary),
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(12),
+        child: Column(
+          children: [
+            TextFormField(
+              keyboardType: TextInputType.text,
+              keyboardAppearance: Brightness.dark,
+              style: const TextStyle(color: Constants.whiteSecondary),
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(12),
+              ],
+              decoration: InputDecoration(
+                focusedBorder: const OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 3, color: Constants.purpleSecondary),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                fillColor: Constants.purpleSecondary,
+                focusColor: Constants.purpleSecondary,
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderSide: BorderSide.none,
+                ),
+                floatingLabelStyle: const TextStyle(
+                  color: Constants.purpleSecondary,
+                  fontSize: Constants.biggerFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+                hintStyle: const TextStyle(
+                  color: Constants.lighterGrey,
+                  fontSize: 15,
+                ),
+                labelText: AppLocalizations.of(context)!.name,
+                labelStyle: const TextStyle(
+                  color: Constants.whiteSecondary,
+                  fontSize: Constants.normalFontSize,
+                ),
+                errorStyle: const TextStyle(
+                  fontSize: Constants.smallerFontSize,
+                ),
+              ),
+              onChanged: (String? value) {
+                setState(() {
+                  name = value.toString();
+                  if (_formKey.currentState!.validate()) {
+                    isNameInputCorrect = true;
+                  }
+                });
+              },
+              validator: (String? value) {
+                return null;
+              },
+            ),
+            TextFormField(
+              initialValue: notes,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              decoration: InputDecoration(
+                labelText: 'Notes',
+              ),
+              onChanged: (String? value) {
+                setState(() {
+                  notes = value ?? '';
+                });
+              },
+            ),
+            TextFormField(
+              initialValue: relation,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                labelText: 'Relation',
+              ),
+              onChanged: (String? value) {
+                setState(() {
+                  relation = value ?? '';
+                });
+              },
+            ),
           ],
-          decoration: InputDecoration(
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            fillColor: Constants.purpleSecondary,
-            focusColor: Constants.purpleSecondary,
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              borderSide: BorderSide.none,
-            ),
-            floatingLabelStyle: const TextStyle(
-              color: Constants.purpleSecondary,
-              fontSize: Constants.biggerFontSize,
-              fontWeight: FontWeight.bold,
-            ),
-            hintStyle: const TextStyle(
-              color: Constants.lighterGrey,
-              fontSize: 15,
-            ),
-            labelText: AppLocalizations.of(context)!.name,
-            labelStyle: const TextStyle(
-              color: Constants.whiteSecondary,
-              fontSize: Constants.normalFontSize,
-            ),
-            errorStyle: const TextStyle(
-              fontSize: Constants.smallerFontSize,
-            ),
-          ),
-          onChanged: (String? value) {
-            setState(() {
-              name = value.toString();
-              isNameInputCorrect = true;
-            });
-          },
-          validator: (String? value) {
-            return null;
-          },
         ),
       ),
     );
@@ -247,6 +281,7 @@ class _AddBirthdayPageState extends State<AddBirthdayPage> {
       ),
     );
   }
+
   Row infoText(String text) {
     return Row(
       mainAxisSize: MainAxisSize.max,

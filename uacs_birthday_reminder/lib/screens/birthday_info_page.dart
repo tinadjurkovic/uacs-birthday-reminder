@@ -2,12 +2,11 @@ import 'package:uacs_birthday_reminder/utilities/birthday.dart';
 
 import '../../components/precise_age.dart';
 import '../../components/view_title.dart';
-
 import 'package:confetti/confetti.dart';
 import '../../components/birthday_timer/birthday_timer.dart';
 import '../../components/wish_generator.dart';
 import '../../screens/birthday_edit_page.dart';
-import '../../utilities/birthday_data.dart' as SmallBirthday;
+import '../../utilities/birthday_data.dart';
 import '../../utilities/calculator.dart';
 import '../../utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
   void initState() {
     super.initState();
     confetti = ConfettiController(duration: const Duration(seconds: 10));
-    Calculator.hasBirthdayToday(SmallBirthday.getDataById(widget.birthdayId).date)
+    Calculator.hasBirthdayToday(getDataById(widget.birthdayId).date)
         ? confetti.play()
         : null;
   }
@@ -60,14 +59,14 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
             const SizedBox(height: 40),
             ViewTitle(AppLocalizations.of(context)!.preciseAge),
             const SizedBox(height: 20),
-            PreciseAge(SmallBirthday.getDataById(widget.birthdayId).date),
+            PreciseAge(getDataById(widget.birthdayId).date),
             const SizedBox(height: 40),
             ViewTitle(AppLocalizations.of(context)!.countdown),
             const SizedBox(height: 20),
             BirthdayTimer(widget.birthdayId),
             const SizedBox(height: 40),
             ViewTitle(AppLocalizations.of(context)!.generateWish),
-            WishGenerator(SmallBirthday.getDataById(widget.birthdayId) as Birthday),
+            WishGenerator(getDataById(widget.birthdayId)),
             const SizedBox(height: 10),
             allowNotificationSwitch(),
             Container(height: 30),
@@ -129,52 +128,65 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
     );
   }
 
-  Widget informationSection() {
-    int weekdayNumber = SmallBirthday.getDataById(widget.birthdayId).date.weekday;
-    String weekday = Calculator.getDayName(weekdayNumber, context);
+ Widget informationSection() {
+  Birthday birthday = getDataById(widget.birthdayId);
+  int weekdayNumber = birthday.date.weekday;
+  String weekday = Calculator.getDayName(weekdayNumber, context);
 
-    int day = SmallBirthday.getDataById(widget.birthdayId).date.day;
+  int day = birthday.date.day;
 
-    int monthNumber = SmallBirthday.getDataById(widget.birthdayId).date.month;
-    String month = Calculator.getMonthName(monthNumber, context);
+  int monthNumber = birthday.date.month;
+  String month = Calculator.getMonthName(monthNumber, context);
 
-    int year = SmallBirthday.getDataById(widget.birthdayId).date.year;
+  int year = birthday.date.year;
 
-    int hourNumber = SmallBirthday.getDataById(widget.birthdayId).date.hour;
-    int minuteNumber = SmallBirthday.getDataById(widget.birthdayId).date.minute;
+  int hourNumber = birthday.date.hour;
+  int minuteNumber = birthday.date.minute;
 
-    String hour = hourNumber < 10 ? '0$hourNumber' : '$hourNumber';
-    String minute = minuteNumber < 10 ? '0$minuteNumber' : '$minuteNumber';
+  String hour = hourNumber < 10 ? '0$hourNumber' : '$hourNumber';
+  String minute = minuteNumber < 10 ? '0$minuteNumber' : '$minuteNumber';
 
-    return Column(
-      children: [
-        const Icon(
-          Icons.cake_outlined,
-          size: 80,
+  return Column(
+    children: [
+      if (birthday.notes != null && birthday.notes!.isNotEmpty)
+        Text(
+          'Notes: ${birthday.notes}', 
+          style: TextStyle(fontSize: 14, color: Colors.white),
+        ),
+      if (birthday.relation != null && birthday.relation!.isNotEmpty)
+        Text(
+          'Relation: ${birthday.relation}',
+          style: TextStyle(fontSize: 14, color: Colors.white),
+        ),
+      const SizedBox(height: 10),
+      const Icon(
+        Icons.cake_outlined,
+        size: 80,
+        color: Constants.whiteSecondary,
+      ),
+      const SizedBox(height: 10),
+      Text(
+        birthday.name,
+        style: const TextStyle(
           color: Constants.whiteSecondary,
+          fontSize: Constants.titleFontSize,
+          fontWeight: FontWeight.bold,
         ),
-        const SizedBox(height: 10),
-        Text(
-          SmallBirthday.getDataById(widget.birthdayId).name,
-          style: const TextStyle(
-            color: Constants.whiteSecondary,
-            fontSize: Constants.titleFontSize,
-            fontWeight: FontWeight.bold,
-          ),
+      ),
+      const SizedBox(height: 10),
+      Text(
+        '$weekday, $day. $month $year - $hour:$minute',
+        style: const TextStyle(
+          color: Constants.whiteSecondary,
+          fontSize: Constants.normalFontSize,
         ),
-        const SizedBox(height: 10),
-        Text(
-          '$weekday, $day. $month $year - $hour:$minute',
-          style: const TextStyle(
-            color: Constants.whiteSecondary,
-            fontSize: Constants.normalFontSize,
-          ),
-        ),
-        const SizedBox(height: 10),
-        zodiacSign(),
-      ],
-    );
-  }
+      ),
+      const SizedBox(height: 10),
+      zodiacSign(),
+    ],
+  );
+}
+
 
   Row zodiacSign() {
     return Row(
@@ -184,7 +196,7 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
           padding: const EdgeInsets.only(right: 15.0),
           child: Text(
             Calculator.getZodiacSign(
-              SmallBirthday.getDataById(widget.birthdayId).date,
+              getDataById(widget.birthdayId).date,
               context,
             )[1],
             textAlign: TextAlign.center,
@@ -196,7 +208,7 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
         ),
         Text(
           Calculator.getZodiacSign(
-            SmallBirthday.getDataById(widget.birthdayId).date,
+            getDataById(widget.birthdayId).date,
             context,
           )[0],
           textAlign: TextAlign.center,
@@ -229,10 +241,10 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
             child: FittedBox(
               fit: BoxFit.fill,
               child: Switch(
-                value: SmallBirthday.getDataById(widget.birthdayId).allowNotifications,
+                value: getDataById(widget.birthdayId).allowNotifications,
                 onChanged: (value) {
                   setState(() {
-                    Birthday birth = SmallBirthday.getDataById(widget.birthdayId) as Birthday;
+                    var birth = getDataById(widget.birthdayId);
                     birth.setAllowNotifications = value;
                   });
                 },

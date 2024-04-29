@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import '../../screens/birthday_info_page.dart';
-import '../../utilities/Birthday.dart';
+import '../../utilities/birthday.dart';
 import '../../utilities/birthday_data.dart';
 import '../../utilities/calculator.dart';
 import '../../utilities/constants.dart';

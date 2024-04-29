@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utilities/Birthday.dart';
+import '../../utilities/birthday.dart';
 import '../../utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -40,7 +40,7 @@ Birthday createBirthdayFromData(List<String> birthdayArray) {
   int notificationDayId = int.parse(birthdayArray[8]);
   int notificationWeekId = int.parse(birthdayArray[9]);
   int notificationMonthId = int.parse(birthdayArray[10]);
-  bool allowNotifications = birthdayArray[10].toLowerCase() == 'true';
+  bool allowNotifications = birthdayArray[11].toLowerCase() == 'true';
 
   Birthday? birthday = Birthday(
     name,
@@ -101,7 +101,7 @@ Future<void> removeBirthday(int birthdayId) async {
   }
 }
 
-Future<void> updateBirthday(int birthdayId, Birthday updatedBirthday) async {
+Future<bool> updateBirthday(int birthdayId, Birthday updatedBirthday) async {
   try {
     final response = await http.put(
       Uri.parse('${Constants.apiBaseUrl}/Birthday/$birthdayId'),
@@ -111,23 +111,26 @@ Future<void> updateBirthday(int birthdayId, Birthday updatedBirthday) async {
       body: jsonEncode(updatedBirthday.toJson()),
     );
 
-    if (response.statusCode == 200) {
-      // Birthday updated successfully
-      // Update the local birthdayList if needed
-      int index = birthdayList.indexWhere((birthday) => birthday.birthdayId == birthdayId);
-      if (index != -1) {
-        birthdayList[index] = updatedBirthday;
-      }
-      // Set notifications or other local operations if needed
-      updatedBirthday.setAllowNotifications = true;
+    if (response.statusCode == 204) {
+      // Birthday updated successfully (status code 204)
+      return true;
+    } else if (response.statusCode == 200) {
+      // Handle other success cases if needed
+      // Update the local birthdayList, set notifications, etc.
+      return true;
     } else {
-      throw Exception('Failed to update birthday');
+      // Failed to update birthday
+      print('Failed to update birthday: ${response.statusCode}');
+      return false;
     }
   } catch (e) {
     print('Error updating birthday: $e');
-    // Handle error as needed
+    
+    return false;
   }
 }
+
+
 
 bool restoreBirthday() {
   if (birthdayList.contains(lastDeleted)) {
@@ -138,15 +141,16 @@ bool restoreBirthday() {
   return true;
 }
 
+
 Birthday getDataById(int birthdayId) {
   for (int i = 0; i < birthdayList.length; i++) {
     if (birthdayList[i].birthdayId == birthdayId) {
       return birthdayList[i];
     }
   }
-
-  return birthdayList.first;
+  return Birthday('', DateTime.now());
 }
+
 
 int getNewBirthdayId() {
   if (birthdayList.isEmpty) {

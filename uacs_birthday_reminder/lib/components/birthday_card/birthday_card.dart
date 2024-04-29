@@ -4,7 +4,7 @@ import '../../components/birthday_card/birthday_card_countdown.dart';
 import '../../components/birthday_card/birthday_card_icon.dart';
 import '../../components/birthday_card/birthday_card_info.dart';
 import '../../screens/birthday_info_page.dart';
-import '../../utilities/Birthday.dart';
+import '../../utilities/birthday.dart';
 import '../../utilities/calculator.dart';
 import '../../utilities/constants.dart';
 import 'package:flutter/material.dart';

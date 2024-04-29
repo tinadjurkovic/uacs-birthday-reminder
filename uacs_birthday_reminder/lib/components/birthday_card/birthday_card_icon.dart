@@ -1,4 +1,4 @@
-import '../../utilities/Birthday.dart';
+import '../../utilities/birthday.dart';
 import '../../utilities/calculator.dart';
 import '../../utilities/constants.dart';
 import 'package:flutter/material.dart';
