@@ -191,6 +191,9 @@ class _AddBirthdayPageState extends State<AddBirthdayPage> {
                 });
               },
               validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return AppLocalizations.of(context)!.nameError;
+                }
                 return null;
               },
             ),
@@ -206,6 +209,9 @@ class _AddBirthdayPageState extends State<AddBirthdayPage> {
                   notes = value ?? '';
                 });
               },
+              validator: (String? value) {
+                return null;
+              },
             ),
             TextFormField(
               initialValue: relation,
@@ -217,6 +223,12 @@ class _AddBirthdayPageState extends State<AddBirthdayPage> {
                 setState(() {
                   relation = value ?? '';
                 });
+              },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return AppLocalizations.of(context)!.nameError;
+                }
+                return null;
               },
             ),
           ],

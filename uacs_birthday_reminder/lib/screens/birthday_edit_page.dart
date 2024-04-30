@@ -204,6 +204,9 @@ class _BirthdayEditPageState extends State<BirthdayEditPage> {
                 });
               },
               validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return AppLocalizations.of(context)!.nameError;
+                }
                 return null;
               },
             ),
@@ -223,6 +226,12 @@ class _BirthdayEditPageState extends State<BirthdayEditPage> {
                 setState(() {
                   relation = value;
                 });
+              },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return AppLocalizations.of(context)!.nameError;
+                }
+                return null;
               },
             ),
           ],

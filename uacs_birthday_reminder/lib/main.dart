@@ -37,6 +37,7 @@ void main() async {
     debugShowCheckedModeBanner: false,
     initialRoute: '/',
     navigatorKey: navigatorKey,
+    locale: Locale('mk') // Change language here
   ));
 }
 
