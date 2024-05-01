@@ -209,37 +209,90 @@ class _BirthdayEditPageState extends State<BirthdayEditPage> {
                 }
                 return null;
               },
+            ),SizedBox(height: 20), 
+          TextFormField(
+            controller: _notesController,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            style: const TextStyle(color: Constants.whiteSecondary),
+            decoration: InputDecoration(
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              fillColor: Constants.purpleSecondary,
+              focusColor: Constants.purpleSecondary,
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderSide: BorderSide.none,
+              ),
+              floatingLabelStyle: const TextStyle(
+                color: Constants.purpleSecondary,
+                fontSize: Constants.biggerFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+              labelText: AppLocalizations.of(context)!.note,
+              labelStyle: const TextStyle(
+                color: Constants.whiteSecondary,
+                fontSize: Constants.normalFontSize,
+              ),
+              errorStyle: const TextStyle(
+                fontSize: Constants.smallerFontSize,
+              ),
             ),
-            TextFormField(
-              controller: _notesController,
-              style: TextStyle(color: Colors.white),
-              onChanged: (value) {
-                setState(() {
-                  notes = value;
-                });
-              },
+            onChanged: (value) {
+              setState(() {
+                notes = value;
+              });
+            },
+          ),
+          SizedBox(height: 20),
+          TextFormField(
+            controller: _relationController,
+            keyboardType: TextInputType.text,
+            style: const TextStyle(color: Constants.whiteSecondary),
+            decoration: InputDecoration(
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              fillColor: Constants.purpleSecondary,
+              focusColor: Constants.purpleSecondary,
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderSide: BorderSide.none,
+              ),
+              floatingLabelStyle: const TextStyle(
+                color: Constants.purpleSecondary,
+                fontSize: Constants.biggerFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+              labelText: AppLocalizations.of(context)!.relation,
+              labelStyle: const TextStyle(
+                color: Constants.whiteSecondary,
+                fontSize: Constants.normalFontSize,
+              ),
+              errorStyle: const TextStyle(
+                fontSize: Constants.smallerFontSize,
+              ),
             ),
-            TextFormField(
-              controller: _relationController,
-              style: TextStyle(color: Colors.white),
-              onChanged: (value) {
-                setState(() {
-                  relation = value;
-                });
-              },
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return AppLocalizations.of(context)!.nameError;
-                }
-                return null;
-              },
-            ),
-          ],
-        ),
+            onChanged: (value) {
+              setState(() {
+                relation = value;
+              });
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return AppLocalizations.of(context)!.relationError;
+              }
+              return null;
+            },
+          ),
+        ],
       ),
-    );
-  }
-
+    ),
+  );
+}
   Container cardPreview() {
     return Container(
       padding: const EdgeInsets.all(10),

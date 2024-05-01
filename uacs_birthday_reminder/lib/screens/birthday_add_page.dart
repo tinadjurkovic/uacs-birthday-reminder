@@ -133,109 +133,155 @@ class _AddBirthdayPageState extends State<AddBirthdayPage> {
     );
   }
 
-  Container inputNameField() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Constants.greySecondary,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(10),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              keyboardType: TextInputType.text,
-              keyboardAppearance: Brightness.dark,
-              style: const TextStyle(color: Constants.whiteSecondary),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
-              ],
-              decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 3, color: Constants.purpleSecondary),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
-                fillColor: Constants.purpleSecondary,
-                focusColor: Constants.purpleSecondary,
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  borderSide: BorderSide.none,
-                ),
-                floatingLabelStyle: const TextStyle(
-                  color: Constants.purpleSecondary,
-                  fontSize: Constants.biggerFontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-                hintStyle: const TextStyle(
-                  color: Constants.lighterGrey,
-                  fontSize: 15,
-                ),
-                labelText: AppLocalizations.of(context)!.name,
-                labelStyle: const TextStyle(
-                  color: Constants.whiteSecondary,
-                  fontSize: Constants.normalFontSize,
-                ),
-                errorStyle: const TextStyle(
-                  fontSize: Constants.smallerFontSize,
-                ),
+Container inputNameField() {
+  return Container(
+    decoration: const BoxDecoration(
+      color: Constants.greySecondary,
+      borderRadius: BorderRadius.all(Radius.circular(15)),
+    ),
+    margin: const EdgeInsets.all(20),
+    padding: const EdgeInsets.all(10),
+    child: Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            keyboardType: TextInputType.text,
+            keyboardAppearance: Brightness.dark,
+            style: const TextStyle(color: Constants.whiteSecondary),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(12),
+            ],
+            decoration: InputDecoration(
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              onChanged: (String? value) {
-                setState(() {
-                  name = value.toString();
-                  if (_formKey.currentState!.validate()) {
-                    isNameInputCorrect = true;
-                  }
-                });
-              },
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return AppLocalizations.of(context)!.nameError;
+              fillColor: Constants.purpleSecondary,
+              focusColor: Constants.purpleSecondary,
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderSide: BorderSide.none,
+              ),
+              floatingLabelStyle: const TextStyle(
+                color: Constants.purpleSecondary,
+                fontSize: Constants.biggerFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+              hintStyle: const TextStyle(
+                color: Constants.lighterGrey,
+                fontSize: 15,
+              ),
+              labelText: AppLocalizations.of(context)!.name,
+              labelStyle: const TextStyle(
+                color: Constants.whiteSecondary,
+                fontSize: Constants.normalFontSize,
+              ),
+              errorStyle: const TextStyle(
+                fontSize: Constants.smallerFontSize,
+              ),
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                name = value.toString();
+                if (_formKey.currentState!.validate()) {
+                  isNameInputCorrect = true;
                 }
-                return null;
-              },
-            ),
-            TextFormField(
-              initialValue: notes,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: InputDecoration(
-                labelText: 'Notes',
+              });
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return AppLocalizations.of(context)!.nameError;
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 20), 
+          TextFormField(
+            initialValue: notes,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              onChanged: (String? value) {
-                setState(() {
-                  notes = value ?? '';
-                });
-              },
-              validator: (String? value) {
-                return null;
-              },
-            ),
-            TextFormField(
-              initialValue: relation,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                labelText: 'Relation',
+              fillColor: Constants.purpleSecondary,
+              focusColor: Constants.purpleSecondary,
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderSide: BorderSide.none,
               ),
-              onChanged: (String? value) {
-                setState(() {
-                  relation = value ?? '';
-                });
-              },
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return AppLocalizations.of(context)!.nameError;
-                }
-                return null;
-              },
+              floatingLabelStyle: const TextStyle(
+                color: Constants.purpleSecondary,
+                fontSize: Constants.biggerFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+              labelText: AppLocalizations.of(context)!.note,
+              labelStyle: const TextStyle(
+                color: Constants.whiteSecondary,
+                fontSize: Constants.normalFontSize,
+              ),
+              errorStyle: const TextStyle(
+                fontSize: Constants.smallerFontSize,
+              ),
             ),
-          ],
-        ),
+            onChanged: (String? value) {
+              setState(() {
+                notes = value ?? '';
+              });
+            },
+            validator: (String? value) {
+              return null;
+            },
+          ),
+          SizedBox(height: 20),
+          TextFormField(
+            initialValue: relation,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              fillColor: Constants.purpleSecondary,
+              focusColor: Constants.purpleSecondary,
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderSide: BorderSide.none,
+              ),
+              floatingLabelStyle: const TextStyle(
+                color: Constants.purpleSecondary,
+                fontSize: Constants.biggerFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+              labelText: AppLocalizations.of(context)!.relation,
+              labelStyle: const TextStyle(
+                color: Constants.whiteSecondary,
+                fontSize: Constants.normalFontSize,
+              ),
+              errorStyle: const TextStyle(
+                fontSize: Constants.smallerFontSize,
+              ),
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                relation = value ?? '';
+              });
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return AppLocalizations.of(context)!.relationError;
+              }
+              return null;
+            },
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Container cardPreview() {
     return Container(
