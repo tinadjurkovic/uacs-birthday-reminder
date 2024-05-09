@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (value) {
           addNotificationListener();
         } else if (await isFirstStartup()) {
-          // ignore: use_build_context_synchronously
           requestNotificationAccess(context);
         }
       },
@@ -142,7 +141,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return const AddBirthdayPage();
+            return const AddBirthdayPage(name: '', notes: '');
           })).then(
             (value) => setState(
               () {},

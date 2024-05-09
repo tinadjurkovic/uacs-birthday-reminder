@@ -128,7 +128,7 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
     );
   }
 
- Widget informationSection() {
+Widget informationSection() {
   Birthday birthday = getDataById(widget.birthdayId);
   int weekdayNumber = birthday.date.weekday;
   String weekday = Calculator.getDayName(weekdayNumber, context);
@@ -148,16 +148,6 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
 
   return Column(
     children: [
-      if (birthday.notes != null && birthday.notes!.isNotEmpty)
-        Text(
-          'Notes: ${birthday.notes}', 
-          style: TextStyle(fontSize: 14, color: Colors.white),
-        ),
-      if (birthday.relation != null && birthday.relation!.isNotEmpty)
-        Text(
-          'Relation: ${birthday.relation}',
-          style: TextStyle(fontSize: 14, color: Colors.white),
-        ),
       const SizedBox(height: 10),
       const Icon(
         Icons.cake_outlined,
@@ -183,6 +173,20 @@ class _BirthdayInfoPageState extends State<BirthdayInfoPage> {
       ),
       const SizedBox(height: 10),
       zodiacSign(),
+           const SizedBox(height: 10),
+        Text(
+          'Notes: ${birthday.notes}', 
+          style: TextStyle(fontSize: 14, color: Colors.white),
+        ),
+      const SizedBox(height: 20),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+            return BirthdayEditPage(widget.birthdayId);
+          })).then((value) => setState(() {}));
+        },
+        child: Text('Edit'),
+      ),
     ],
   );
 }

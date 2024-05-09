@@ -14,13 +14,13 @@ Future<void> initializeDataSystem() async {
 
 Future<void> loadBirthdays() async {
   try {
-    final response = await http.get(Uri.parse(Constants.apiBaseUrl + '/Birthday'));
+    final response =
+        await http.get(Uri.parse(Constants.apiBaseUrl + '/Birthday'));
     debugPrint(response.statusCode.toString());
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       birthdayList = data.map((json) => Birthday.fromJson(json)).toList();
-    }
-    else {
+    } else {
       throw Exception('Failed to load birthdays');
     }
   } catch (e) {
@@ -69,18 +69,13 @@ Future<void> addBirthday(Birthday birthday) async {
     );
 
     if (response.statusCode == 201) {
-      // Birthday created successfully
-      // Optionally, parse the response body if needed
-      // Example: Birthday createdBirthday = Birthday.fromJson(jsonDecode(response.body));
       birthdayList.add(birthday);
-      // Set notifications or other local operations if needed
       birthday.setAllowNotifications = true;
     } else {
       throw Exception('Failed to add birthday');
     }
   } catch (e) {
     print('Error adding birthday: $e');
-    // Handle error as needed
   }
 }
 
@@ -90,14 +85,12 @@ Future<void> removeBirthday(int birthdayId) async {
       Uri.parse('${Constants.apiBaseUrl}/Birthday/$birthdayId'),
     );
     if (response.statusCode == 204) {
-      // Birthday removed successfully
       birthdayList.removeWhere((birthday) => birthday.birthdayId == birthdayId);
     } else {
       throw Exception('Failed to remove birthday');
     }
   } catch (e) {
     print('Error removing birthday: $e');
-    // Handle error as needed
   }
 }
 
@@ -112,25 +105,23 @@ Future<bool> updateBirthday(int birthdayId, Birthday updatedBirthday) async {
     );
 
     if (response.statusCode == 204) {
-      // Birthday updated successfully (status code 204)
+      birthdayList[birthdayList.indexWhere((b) => b.birthdayId == birthdayId)] =
+          updatedBirthday;
       return true;
     } else if (response.statusCode == 200) {
-      // Handle other success cases if needed
-      // Update the local birthdayList, set notifications, etc.
+      var updatedBirthdayFromAPI = Birthday.fromJson(jsonDecode(response.body));
+      birthdayList[birthdayList.indexWhere((b) => b.birthdayId == birthdayId)] =
+          updatedBirthdayFromAPI;
       return true;
     } else {
-      // Failed to update birthday
       print('Failed to update birthday: ${response.statusCode}');
       return false;
     }
   } catch (e) {
     print('Error updating birthday: $e');
-    
     return false;
   }
 }
-
-
 
 bool restoreBirthday() {
   if (birthdayList.contains(lastDeleted)) {
@@ -141,7 +132,6 @@ bool restoreBirthday() {
   return true;
 }
 
-
 Birthday getDataById(int birthdayId) {
   for (int i = 0; i < birthdayList.length; i++) {
     if (birthdayList[i].birthdayId == birthdayId) {
@@ -150,7 +140,6 @@ Birthday getDataById(int birthdayId) {
   }
   return Birthday('', DateTime.now());
 }
-
 
 int getNewBirthdayId() {
   if (birthdayList.isEmpty) {

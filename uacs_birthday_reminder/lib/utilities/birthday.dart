@@ -3,12 +3,19 @@ import '../../utilities/birthday_data.dart';
 class Birthday {
   late int _birthdayId;
   late String _name;
-  late String? _notes;
-  late String? _relation;
+  late String _notes;
   late DateTime _date;
   late List<int> _notificationIds;
   late bool _allowNotifications;
   late int? _birthdayGroupId;
+
+  String get notes {
+    return _notes;
+  }
+
+  set notes(String notes) {
+    _notes = notes;
+  }
 
   int get birthdayId {
     return _birthdayId;
@@ -24,22 +31,6 @@ class Birthday {
 
   set setname(String name) {
     _name = name;
-  }
-
-  String? get notes {
-    return _notes;
-  }
-
-  set setnotes(String notes) {
-    _notes = notes;
-  }
-
-  String? get relation {
-    return _relation;
-  }
-
-  set setrelation(String relation) {
-    _relation = relation;
   }
 
   DateTime get date {
@@ -82,11 +73,9 @@ class Birthday {
     bool? allowNotifications,
     this._birthdayGroupId,
     String? notes,
-    String? relation,
   ]) {
     _birthdayId = id ?? getNewBirthdayId();
     _notes = notes ?? '';
-    _relation = relation ?? '';
     List<int>? newNotificationIds = [
       int.parse("${birthdayId}1"),
       int.parse("${birthdayId}2"),
@@ -97,30 +86,26 @@ class Birthday {
     _allowNotifications = allowNotifications ?? true;
   }
 
-factory Birthday.fromJson(Map<String, dynamic> json) {
-  return Birthday(
-    json['name'] as String,
-    DateTime.parse(json['date'] as String),
-    json['id'] as int,
-    json['notificationIds'] != null
-        ? List<int>.from(json['notificationIds'] as List<dynamic>)
-        : null,
-    json['allowNotifications'] as bool,
-    json['birthdayGroupId'] as int?,
-    json['notes'] as String?, 
-    json['relation'] as String?, 
-  );
-}
-
-
+  factory Birthday.fromJson(Map<String, dynamic> json) {
+    return Birthday(
+      json['name'] as String,
+      DateTime.parse(json['date'] as String),
+      json['id'] as int,
+      json['notificationIds'] != null
+          ? List<int>.from(json['notificationIds'] as List<dynamic>)
+          : null,
+      json['allowNotifications'] as bool,
+      json['birthdayGroupId'] as int?,
+      json['note'] as String?,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'id': _birthdayId,
       'date': _date.toIso8601String(),
       'name': _name,
-      'notes': _notes,
-      'relation': _relation,
+      'note': _notes,
       'allowNotifications': _allowNotifications,
       'notificationIds': _notificationIds,
       'birthdayGroupId': _birthdayGroupId,

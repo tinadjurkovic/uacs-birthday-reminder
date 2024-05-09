@@ -25,13 +25,12 @@
     "timeInfo": "Note that you can leave this as default if you don't know the exact time.",
     "editInfo": "Note that all properties can be changed later, by tapping on a birthday on the home screen.",
     "name": "Name",
-    "relation": "Relation",
     "note": "Note",
     "nameError": "Please enter a name.",
-    "relationError": "Please enter a relation.",
     "save": "Save",
 
     "settings": "Settings",
+    "selectGroup": "Select Group",
 
     "notifications": "Notifications",
     "notificationTime": "Notifications time",

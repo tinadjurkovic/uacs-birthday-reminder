@@ -23,12 +23,10 @@ class _BirthdayEditPageState extends State<BirthdayEditPage> {
   late DateTime newDate;
   late TimeOfDay newTime;
   late String notes = '';
-  late String relation = '';
 
   final ScrollController _scrollController = ScrollController();
 
   TextEditingController _notesController = TextEditingController();
-  TextEditingController _relationController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   bool isNameInputCorrect = true;
@@ -36,11 +34,13 @@ class _BirthdayEditPageState extends State<BirthdayEditPage> {
   @override
   void initState() {
     super.initState();
-    newName = getDataById(widget.birthdayId).name;
-    newDate = getDataById(widget.birthdayId).date;
+    Birthday birthday = getDataById(widget.birthdayId);
+    newName = birthday.name;
+    newDate = birthday.date;
     newTime = TimeOfDay(hour: newDate.hour, minute: newDate.minute);
-    relation = getDataById(widget.birthdayId).relation!;
-    notes = getDataById(widget.birthdayId).notes!;
+    notes = birthday.notes;
+
+    _notesController.text = notes;
   }
 
   @override
@@ -209,90 +209,52 @@ class _BirthdayEditPageState extends State<BirthdayEditPage> {
                 }
                 return null;
               },
-            ),SizedBox(height: 20), 
-          TextFormField(
-            controller: _notesController,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            style: const TextStyle(color: Constants.whiteSecondary),
-            decoration: InputDecoration(
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-              ),
-              fillColor: Constants.purpleSecondary,
-              focusColor: Constants.purpleSecondary,
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                borderSide: BorderSide.none,
-              ),
-              floatingLabelStyle: const TextStyle(
-                color: Constants.purpleSecondary,
-                fontSize: Constants.biggerFontSize,
-                fontWeight: FontWeight.bold,
-              ),
-              labelText: AppLocalizations.of(context)!.note,
-              labelStyle: const TextStyle(
-                color: Constants.whiteSecondary,
-                fontSize: Constants.normalFontSize,
-              ),
-              errorStyle: const TextStyle(
-                fontSize: Constants.smallerFontSize,
-              ),
             ),
-            onChanged: (value) {
-              setState(() {
-                notes = value;
-              });
-            },
-          ),
-          SizedBox(height: 20),
-          TextFormField(
-            controller: _relationController,
-            keyboardType: TextInputType.text,
-            style: const TextStyle(color: Constants.whiteSecondary),
-            decoration: InputDecoration(
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(width: 3, color: Constants.purpleSecondary),
-                borderRadius: BorderRadius.all(Radius.circular(15)),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: _notesController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: const TextStyle(color: Constants.whiteSecondary),
+              decoration: InputDecoration(
+                focusedBorder: const OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 3, color: Constants.purpleSecondary),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                fillColor: Constants.purpleSecondary,
+                focusColor: Constants.purpleSecondary,
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderSide: BorderSide.none,
+                ),
+                floatingLabelStyle: const TextStyle(
+                  color: Constants.purpleSecondary,
+                  fontSize: Constants.biggerFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+                labelText: AppLocalizations.of(context)!.note,
+                labelStyle: const TextStyle(
+                  color: Constants.whiteSecondary,
+                  fontSize: Constants.normalFontSize,
+                ),
+                errorStyle: const TextStyle(
+                  fontSize: Constants.smallerFontSize,
+                ),
               ),
-              fillColor: Constants.purpleSecondary,
-              focusColor: Constants.purpleSecondary,
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                borderSide: BorderSide.none,
-              ),
-              floatingLabelStyle: const TextStyle(
-                color: Constants.purpleSecondary,
-                fontSize: Constants.biggerFontSize,
-                fontWeight: FontWeight.bold,
-              ),
-              labelText: AppLocalizations.of(context)!.relation,
-              labelStyle: const TextStyle(
-                color: Constants.whiteSecondary,
-                fontSize: Constants.normalFontSize,
-              ),
-              errorStyle: const TextStyle(
-                fontSize: Constants.smallerFontSize,
-              ),
+              onChanged: (value) {
+                setState(() {
+                  notes = value;
+                });
+              },
             ),
-            onChanged: (value) {
-              setState(() {
-                relation = value;
-              });
-            },
-            validator: (String? value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.relationError;
-              }
-              return null;
-            },
-          ),
-        ],
+            SizedBox(height: 20),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
+
   Container cardPreview() {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -326,48 +288,47 @@ class _BirthdayEditPageState extends State<BirthdayEditPage> {
   }
 
   void saveBirthday(BuildContext context) {
-  if (!_formKey.currentState!.validate()) {
-    setState(() {
-      isNameInputCorrect = false;
-    });
-    return;
-  }
+    if (!_formKey.currentState!.validate()) {
+      setState(() {
+        isNameInputCorrect = false;
+      });
+      return;
+    }
 
-  newDate = DateTime(
-    newDate.year,
-    newDate.month,
-    newDate.day,
-    newTime.hour,
-    newTime.minute,
-  );
+    newDate = DateTime(
+      newDate.year,
+      newDate.month,
+      newDate.day,
+      newTime.hour,
+      newTime.minute,
+    );
 
-  updateBirthday(
-    widget.birthdayId,
-    new Birthday(
-      newName,
-      newDate,
+    updateBirthday(
       widget.birthdayId,
-      null,
-      true,
-      null,
-      _relationController.text, 
-      _notesController.text,  
-    ),
-  ).then(
-    (value) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Relation: ${_relationController.text}\nNotes: ${_notesController.text}'),
-          duration: Duration(seconds: 3),
-        ),
-      );
+      new Birthday(
+        newName,
+        newDate,
+        widget.birthdayId,
+        null,
+        true,
+        null,
+        _notesController.text,
+      ),
+    ).then(
+      (value) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Notes: ${_notesController.text}',
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
 
-      Navigator.pop(context);
-    },
-  );
-}
-
-
+        Navigator.pop(context);
+      },
+    );
+  }
 
   Row infoText(String text) {
     return Row(

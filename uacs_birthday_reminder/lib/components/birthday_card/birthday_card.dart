@@ -91,7 +91,9 @@ class _BirthdayCardState extends State<BirthdayCard>
           children: [
             BirthdayCardIcon(widget.birthday),
             const SizedBox(width: 15),
-            BirthdayCardInfo(widget.birthday),
+            Expanded(
+              child: BirthdayCardInfo(widget.birthday),
+            ),
             const Spacer(),
             BirthdayCardCountdown(widget.birthday),
             rightArrow(),

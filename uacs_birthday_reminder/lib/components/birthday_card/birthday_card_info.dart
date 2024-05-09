@@ -19,6 +19,9 @@ class _BirthdayCardInfoState extends State<BirthdayCardInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         nameText(),
+        SizedBox(height: 5),
+        notesText(), 
+        SizedBox(height: 5),
         infoText(),
       ],
     );
@@ -40,6 +43,16 @@ class _BirthdayCardInfoState extends State<BirthdayCardInfo> {
       style: const TextStyle(
         fontSize: Constants.biggerFontSize,
         fontWeight: FontWeight.bold,
+        color: Constants.whiteSecondary,
+      ),
+    );
+  }
+
+  Text notesText() {
+    return Text(
+      'Notes: ${widget.birthday.notes}',
+      style: TextStyle(
+        fontSize: Constants.smallerFontSize,
         color: Constants.whiteSecondary,
       ),
     );
